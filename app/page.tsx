@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
+import { detectIncognito } from 'detectincognitojs'
+
 export default function Login() {
   const [nis, setNis] = useState('')
   const [loading, setLoading] = useState(false)
@@ -14,13 +16,13 @@ export default function Login() {
   useEffect(() => {
     const checkIncognito = async () => {
       try {
-        if (navigator.storage && navigator.storage.estimate) {
-          const { quota } = await navigator.storage.estimate();
-          if (quota && quota < 150000000) {
-            setIncognitoBlocked(true);
-          }
+        const result = await detectIncognito();
+        if (result.isPrivate) {
+          setIncognitoBlocked(true);
         }
-      } catch (e) { }
+      } catch (e) {
+        console.error('Failed to detect incognito:', e);
+      }
     };
     checkIncognito();
   }, []);
