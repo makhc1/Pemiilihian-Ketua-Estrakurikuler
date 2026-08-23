@@ -8,6 +8,7 @@ export default function Vote() {
   const [candidates, setCandidates] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [confirmModal, setConfirmModal] = useState<{isOpen: boolean, id: string, name: string} | null>(null)
+  const [detailModal, setDetailModal] = useState<any | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [isVoting, setIsVoting] = useState(false)
   const router = useRouter()
@@ -34,11 +35,12 @@ export default function Vote() {
       if (e.key === 'Escape') {
         if (errorMsg) setErrorMsg('');
         else if (confirmModal?.isOpen) setConfirmModal(null);
+        else if (detailModal) setDetailModal(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [errorMsg, confirmModal?.isOpen]);
+  }, [errorMsg, confirmModal?.isOpen, detailModal]);
 
   const handleVote = (id: string, name: string) => {
     setConfirmModal({ isOpen: true, id, name })
@@ -130,83 +132,48 @@ export default function Vote() {
           </p>
         </div>
         
-        {/* Asymmetrical Bento Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
+        {/* Compact Grid Architecture */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 lg:gap-10">
           {candidates.map((c, index) => {
-            // Create asymmetrical rhythm: some span 12, some span 6 on large screens
-            const spanClass = (candidates.length % 2 !== 0 && index === 0) ? 'lg:col-span-12' : 'lg:col-span-6'
-            
-            // Fix Tailwind v4 dynamic extraction by using static strings
             const delays = ['animate-fade-up-1', 'animate-fade-up-2', 'animate-fade-up-3']
             const fadeDelay = delays[index % 3]
             
             return (
-              <div key={c.id} className={`${spanClass} opacity-0 ${fadeDelay} flex`}>
-                
-                {/* Double-Bezel Architecture */}
-                <div className="w-full bg-white/60 backdrop-blur-md p-2 rounded-[2.5rem] border border-[var(--color-border)] shadow-xl shadow-blue-900/5 flex flex-col group transition-all duration-700 ease-vanguard hover:shadow-2xl hover:shadow-[var(--color-brand)]/20">
-                  <div className="bg-white rounded-[calc(2.5rem-0.5rem)] shadow-[inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col h-full overflow-hidden">
-                    
-                    {/* Header Image Area */}
-                    <div className="relative w-full h-64 sm:h-80 bg-[var(--color-surface)] overflow-hidden">
-                      {c.photo_url ? (
-                        <img 
-                          src={c.photo_url}
-                          alt={`Foto Kandidat ${c.name}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[2000ms] ease-vanguard group-hover:scale-105" 
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-[10px] uppercase tracking-widest text-[var(--color-foreground)]/30 font-bold">Aset Tidak Tersedia</span>
-                        </div>
-                      )}
-                      
-                      {/* Badge Overlay */}
-                      <div className="absolute top-6 right-6">
-                        <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-[var(--color-brand)] shadow-sm">
-                          Kandidat 0{index + 1}
-                        </div>
-                      </div>
+              <button 
+                key={c.id} 
+                onClick={() => setDetailModal(c)}
+                className={`group flex flex-col items-center bg-white/60 backdrop-blur-md p-3 sm:p-5 rounded-3xl border border-[var(--color-border)] shadow-lg shadow-blue-900/5 transition-all duration-500 ease-vanguard hover:shadow-xl hover:shadow-[var(--color-brand)]/20 hover:-translate-y-1 opacity-0 ${fadeDelay}`}
+              >
+                <div className="w-full aspect-square relative rounded-2xl overflow-hidden mb-4 bg-[var(--color-surface)] border border-[var(--color-border)]">
+                  {c.photo_url ? (
+                    <img 
+                      src={c.photo_url}
+                      alt={`Foto Kandidat ${c.name}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-vanguard group-hover:scale-105" 
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[8px] sm:text-[10px] uppercase tracking-widest text-[var(--color-foreground)]/30 font-bold">No Photo</span>
                     </div>
-                    
-                    {/* Content Area */}
-                    <div className="p-8 sm:p-12 flex flex-col flex-grow">
-                      <h3 className="text-3xl font-bold tracking-tight text-[var(--color-foreground)] mb-6">{c.name}</h3>
-                      
-                      <div className="flex-grow mb-12">
-                        <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-brand)] mb-4">Visi & Misi Terverifikasi</p>
-                        <p className="text-[var(--color-foreground)]/80 text-sm leading-[1.8] font-medium whitespace-pre-wrap">
-                          {c.vision_mission || '—'}
-                        </p>
-                      </div>
-                      
-                      {/* Nested CTA */}
-                      <button 
-                        onClick={() => handleVote(c.id, c.name)} 
-                        className="group/btn w-full bg-[var(--color-brand)] text-white py-2 pl-6 pr-2 rounded-full hover:bg-[var(--color-brand-hover)] transition-all duration-500 ease-vanguard active:scale-[0.98] flex justify-between items-center shadow-lg shadow-[var(--color-brand)]/20"
-                      >
-                        <span className="font-medium text-sm tracking-wide">
-                          Pilih Kandidat
-                        </span>
-                        
-                        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-500 ease-vanguard group-hover/btn:scale-105 group-hover/btn:bg-white/30">
-                          <svg className="w-4 h-4 text-white transform transition-transform duration-500 ease-vanguard group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                          </svg>
-                        </div>
-                      </button>
-                    </div>
-
+                  )}
+                  {/* Badge */}
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white/90 backdrop-blur-md px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-[var(--color-brand)] shadow-sm">
+                    0{index + 1}
                   </div>
                 </div>
-              </div>
+                
+                <h3 className="font-bold text-sm sm:text-lg tracking-tight text-[var(--color-foreground)] text-center line-clamp-2">{c.name}</h3>
+                <p className="mt-2 text-[8px] sm:text-[10px] uppercase tracking-widest text-[var(--color-foreground)]/40 font-bold group-hover:text-[var(--color-brand)] transition-colors">
+                  Ketuk untuk Detail
+                </p>
+              </button>
             )
           })}
           
           {candidates.length === 0 && (
-            <div className="lg:col-span-12">
+            <div className="col-span-2 sm:col-span-3">
               <div className="w-full bg-transparent border border-[var(--color-border)] rounded-[2rem] p-16 text-center">
                 <span className="text-xs uppercase tracking-widest text-[var(--color-foreground)]/40 font-medium">Data Kandidat Belum Siap</span>
               </div>
@@ -218,7 +185,7 @@ export default function Vote() {
     
     {/* Error Modal */}
     {errorMsg && (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-black/20 backdrop-blur-md transition-opacity" onClick={() => setErrorMsg('')}></div>
         <div className="relative bg-white/60 backdrop-blur-2xl p-1.5 rounded-[2rem] border border-[var(--color-border)] shadow-2xl w-full max-w-sm z-10 opacity-0 animate-fade-up">
           <div className="bg-white rounded-[calc(2rem-0.375rem)] p-8 shadow-[inset_0_1px_1px_rgba(255,255,255,1)]">
@@ -232,6 +199,76 @@ export default function Vote() {
             <button onClick={() => setErrorMsg('')} className="w-full bg-[var(--color-brand)] text-white font-medium text-sm py-4 rounded-xl hover:bg-[var(--color-brand-hover)] transition-all active:scale-[0.98]">
               Tutup
             </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Detail Modal (Glassmorphism) */}
+    {detailModal && (
+      <div className="fixed inset-0 z-[50] flex items-center justify-center p-4 sm:p-6">
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-md transition-opacity" onClick={() => setDetailModal(null)}></div>
+        
+        <div className="relative bg-white/60 backdrop-blur-3xl p-2 rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col z-10 opacity-0 animate-fade-up overflow-hidden">
+          <div className="bg-white rounded-[calc(2.5rem-0.5rem)] shadow-[inset_0_1px_1px_rgba(255,255,255,1)] flex flex-col h-full overflow-hidden">
+            
+            {/* Header Image */}
+            <div className="relative w-full h-48 sm:h-64 bg-[var(--color-surface)] shrink-0">
+              {detailModal.photo_url ? (
+                <img 
+                  src={detailModal.photo_url}
+                  alt={`Foto Kandidat ${detailModal.name}`}
+                  className="absolute inset-0 w-full h-full object-cover object-center" 
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[10px] uppercase tracking-widest text-[var(--color-foreground)]/30 font-bold">Aset Tidak Tersedia</span>
+                </div>
+              )}
+              
+              <button 
+                onClick={() => setDetailModal(null)}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center transition-colors text-white"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Content (Scrollable) */}
+            <div className="p-6 sm:p-10 overflow-y-auto">
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-foreground)] mb-6">{detailModal.name}</h3>
+              
+              <div className="mb-8">
+                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-brand)] mb-3">Visi & Misi Terverifikasi</p>
+                <p className="text-[var(--color-foreground)]/80 text-sm leading-[1.8] font-medium whitespace-pre-wrap">
+                  {detailModal.vision_mission || '—'}
+                </p>
+              </div>
+            </div>
+            
+            {/* Fixed Footer */}
+            <div className="p-4 sm:p-6 border-t border-[var(--color-border)] bg-gray-50/50 shrink-0">
+              <button 
+                onClick={() => {
+                  setDetailModal(null);
+                  handleVote(detailModal.id, detailModal.name);
+                }} 
+                className="group w-full bg-[var(--color-brand)] text-white py-2 pl-6 pr-2 rounded-full hover:bg-[var(--color-brand-hover)] transition-all duration-500 ease-vanguard active:scale-[0.98] flex justify-between items-center shadow-lg shadow-[var(--color-brand)]/20"
+              >
+                <span className="font-medium text-sm tracking-wide">
+                  Pilih Kandidat Ini
+                </span>
+                
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-500 ease-vanguard group-hover:scale-105 group-hover:bg-white/30">
+                  <svg className="w-4 h-4 text-white transform transition-transform duration-500 ease-vanguard group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+            
           </div>
         </div>
       </div>
