@@ -135,7 +135,10 @@ export default function Vote() {
           {candidates.map((c, index) => {
             // Create asymmetrical rhythm: some span 12, some span 6 on large screens
             const spanClass = (candidates.length % 2 !== 0 && index === 0) ? 'lg:col-span-12' : 'lg:col-span-6'
-            const fadeDelay = `animate-fade-up-${Math.min((index % 3) + 1, 3)}`
+            
+            // Fix Tailwind v4 dynamic extraction by using static strings
+            const delays = ['animate-fade-up-1', 'animate-fade-up-2', 'animate-fade-up-3']
+            const fadeDelay = delays[index % 3]
             
             return (
               <div key={c.id} className={`${spanClass} opacity-0 ${fadeDelay} flex`}>
