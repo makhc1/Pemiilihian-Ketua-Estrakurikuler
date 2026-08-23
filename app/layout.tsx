@@ -8,6 +8,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://pemiilihian-ketua-estrakurikuler.vercel.app'),
   title: {
     default: 'Pemilihan Ketua ICT | SMKN 20 Jakarta',
     template: '%s | ICT SMKN 20 Jakarta'
