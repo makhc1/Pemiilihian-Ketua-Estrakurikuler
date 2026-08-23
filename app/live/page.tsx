@@ -175,7 +175,8 @@ export default function LiveDashboard() {
                   
                   {/* Candidate Info Card */}
                   <div className="mt-4 md:mt-8 text-center bg-white p-4 md:p-6 rounded-[2rem] w-full shadow-xl shadow-blue-900/5 border border-[var(--color-border)] relative overflow-hidden shrink-0 z-10 transition-transform duration-500 hover:-translate-y-2">
-                    <div className="relative w-16 h-16 md:w-24 md:h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-[var(--color-surface)] shadow-md bg-[var(--color-surface)]">
+                    {/* Candidate Photo (Squared for better portrait framing) */}
+                    <div className="relative w-20 h-20 md:w-28 md:h-28 mx-auto mb-5 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-sm bg-[var(--color-surface)]">
                       {c.photo_url ? (
                         <img 
                           src={c.photo_url}
