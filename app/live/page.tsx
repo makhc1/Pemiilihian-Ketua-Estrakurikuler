@@ -34,13 +34,28 @@ export default function LiveDashboard() {
   useEffect(() => {
     fetchData()
     
+    // 1. WebSocket Realtime Subscription
     const subCandidates = supabase.channel('realtime_live')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'candidates' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'voters' }, () => fetchData())
-      .subscribe()
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ Realtime WebSocket connected.')
+        } else {
+          console.log('⚠️ Realtime status:', status)
+        }
+      })
+
+    // 2. Polling Fallback (5 detik)
+    // Berfungsi sebagai asuransi jika WebSocket diblokir oleh firewall sekolah 
+    // atau jika fitur Realtime belum diaktifkan di Supabase Dashboard.
+    const pollInterval = setInterval(() => {
+      fetchData()
+    }, 5000)
 
     return () => { 
       supabase.removeChannel(subCandidates)
+      clearInterval(pollInterval)
     }
   }, [])
 
