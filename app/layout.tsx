@@ -8,8 +8,53 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Pemilihan Ketua ICT',
-  description: 'Sistem Pemilihan Ketua Ekstrakurikuler ICT',
+  title: {
+    default: 'ICT ELECTION | SMKN 20 Jakarta',
+    template: '%s | ICT SMKN 20 Jakarta'
+  },
+  description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler Information Communication Technology (ICT) SMKN 20 Jakarta. Aman, transparan, dan real-time.',
+  keywords: ['E-Voting', 'Pemilihan Ketua', 'ICT SMKN 20', 'Ekstrakurikuler IT', 'SMKN 20 Jakarta', 'Osis SMKN 20', 'Voting Online'],
+  authors: [{ name: 'ICT SMKN 20 Jakarta' }],
+  creator: 'Tim IT ICT SMKN 20',
+  publisher: 'SMKN 20 Jakarta',
+  openGraph: {
+    type: 'website',
+    locale: 'id_ID',
+    url: 'https://pemiilihian-ketua-estrakurikuler.vercel.app', // placeholder, user can update
+    title: 'ICT ELECTION | SMKN 20 Jakarta',
+    description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler ICT SMKN 20 Jakarta.',
+    siteName: 'ICT ELECTION SMKN 20',
+    images: [
+      {
+        url: '/inilogo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Logo ICT SMKN 20 Jakarta',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ICT ELECTION | SMKN 20 Jakarta',
+    description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler ICT SMKN 20 Jakarta.',
+    images: ['/inilogo.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/inilogo.jpg',
+    shortcut: '/inilogo.jpg',
+    apple: '/inilogo.jpg',
+  },
 };
 
 export default function RootLayout({
