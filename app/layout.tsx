@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     siteName: 'ICT SMKN 20',
     images: [
       {
-        url: '/inilogo.jpg',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Logo ICT SMKN 20 Jakarta',
+        alt: 'Open Graph Banner - Pemilihan Ketua ICT SMKN 20 Jakarta',
       },
     ],
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pemilihan Ketua ICT | SMKN 20 Jakarta',
     description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler ICT SMKN 20 Jakarta.',
-    images: ['/inilogo.jpg'],
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
