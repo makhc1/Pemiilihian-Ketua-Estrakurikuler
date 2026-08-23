@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FDFCFB;
+  --color-foreground: #09090B;
+  --color-border: #E5E5E5;
+  --color-brand: #0ea5e9;
+  --color-brand-hover: #0284c7;
+  --color-surface: #f0f9ff;
+  --color-muted: #737373;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-vanguard: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-slow: cubic-bezier(0.22, 1, 0.36, 1);
+  
+  --animate-fade-up: fade-up 1s var(--ease-slow) forwards;
+  --animate-fade-up-1: fade-up 1s var(--ease-slow) 0.1s forwards;
+  --animate-fade-up-2: fade-up 1s var(--ease-slow) 0.2s forwards;
+  --animate-fade-up-3: fade-up 1s var(--ease-slow) 0.3s forwards;
+
+  @keyframes fade-up {
+    0% { opacity: 0; transform: translateY(40px); filter: blur(8px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
