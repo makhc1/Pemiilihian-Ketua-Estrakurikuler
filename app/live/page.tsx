@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export default function LiveDashboard() {
   const [candidates, setCandidates] = useState<any[]>([])
@@ -9,6 +10,16 @@ export default function LiveDashboard() {
   const [totalVoters, setTotalVoters] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check Auth
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.push('/admin')
+      }
+    })
+  }, [router])
 
   const fetchData = async () => {
     try {
