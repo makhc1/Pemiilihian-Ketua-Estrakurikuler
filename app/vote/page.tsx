@@ -165,8 +165,11 @@ export default function Vote() {
                 </div>
                 
                 <h3 className="font-bold text-sm sm:text-lg tracking-tight text-[var(--color-foreground)] text-center line-clamp-2">{c.name}</h3>
-                <p className="mt-2 text-[8px] sm:text-[10px] uppercase tracking-widest text-[var(--color-foreground)]/40 font-bold group-hover:text-[var(--color-brand)] transition-colors">
-                  Ketuk untuk Detail
+                <p className="mt-3 flex items-center justify-center gap-1 text-[8px] sm:text-[10px] uppercase tracking-widest font-bold text-[var(--color-brand)]/80 group-hover:text-[var(--color-brand)] transition-colors">
+                  <span>Lihat Detail</span>
+                  <svg className="w-3 h-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
                 </p>
               </button>
             )
@@ -236,16 +239,20 @@ export default function Vote() {
               </button>
             </div>
             
-            {/* Content (Scrollable) */}
-            <div className="p-6 sm:p-10 overflow-y-auto">
-              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-foreground)] mb-6">{detailModal.name}</h3>
-              
-              <div className="mb-8">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-brand)] mb-3">Visi & Misi Terverifikasi</p>
-                <p className="text-[var(--color-foreground)]/80 text-sm leading-[1.8] font-medium whitespace-pre-wrap">
-                  {detailModal.vision_mission || '—'}
-                </p>
+            {/* Content (Scrollable with Affordance) */}
+            <div className="relative flex-grow min-h-0 overflow-hidden flex flex-col">
+              <div className="p-6 sm:p-10 overflow-y-auto flex-grow">
+                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-foreground)] mb-6">{detailModal.name}</h3>
+                
+                <div className="mb-8">
+                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-brand)] mb-3">Visi & Misi Terverifikasi</p>
+                  <p className="text-[var(--color-foreground)]/80 text-sm leading-[1.8] font-medium whitespace-pre-wrap">
+                    {detailModal.vision_mission || '—'}
+                  </p>
+                </div>
               </div>
+              {/* Fade out scroll indicator */}
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
             </div>
             
             {/* Fixed Footer */}
