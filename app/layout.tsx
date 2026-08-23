@@ -9,7 +9,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'ICT ELECTION | SMKN 20 Jakarta',
+    default: 'Pemilihan Ketua ICT | SMKN 20 Jakarta',
     template: '%s | ICT SMKN 20 Jakarta'
   },
   description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler Information Communication Technology (ICT) SMKN 20 Jakarta. Aman, transparan, dan real-time.',
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'id_ID',
     url: 'https://pemiilihian-ketua-estrakurikuler.vercel.app', // placeholder, user can update
-    title: 'ICT ELECTION | SMKN 20 Jakarta',
+    title: 'Pemilihan Ketua ICT | SMKN 20 Jakarta',
     description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler ICT SMKN 20 Jakarta.',
-    siteName: 'ICT ELECTION SMKN 20',
+    siteName: 'ICT SMKN 20',
     images: [
       {
         url: '/inilogo.jpg',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ICT ELECTION | SMKN 20 Jakarta',
+    title: 'Pemilihan Ketua ICT | SMKN 20 Jakarta',
     description: 'Sistem E-Voting resmi untuk Pemilihan Ketua Ekstrakurikuler ICT SMKN 20 Jakarta.',
     images: ['/inilogo.jpg'],
   },

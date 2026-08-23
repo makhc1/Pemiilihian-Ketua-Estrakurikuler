@@ -1,4 +1,4 @@
-# ICT ELECTION SMKN 20
+# Pemilihan Ketua ICT SMKN 20
 
 A modern, high-performance, and real-time electronic voting system (E-Voting) built exclusively for the IT Extracurricular (ICT) of SMKN 20 Jakarta.
 

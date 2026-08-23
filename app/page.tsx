@@ -109,8 +109,9 @@ export default function Login() {
         <div className="w-full md:w-1/2 p-8 pt-16 md:p-16 lg:p-24 flex flex-col justify-center md:justify-between relative z-10 opacity-0 animate-fade-up">
           <div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1] text-white drop-shadow-2xl mb-6 md:mb-0">
-              ICT<br />
-              ELECTION.
+              Information<br />
+              Communication<br />
+              Technology.
             </h1>
           </div>
 
