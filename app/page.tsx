@@ -49,30 +49,42 @@ export default function Login() {
     }
 
     setLoading(true)
-    const { data, error } = await supabase
-      .from('voters')
-      .select('*')
-      .eq('nis', nis.trim())
-      .single()
+    
+    try {
+      const { loginAction } = await import('@/app/actions')
+      const result = await loginAction(nis)
+      
+      setLoading(false)
 
-    setLoading(false)
+      if (!result.success) {
+        if (result.error === 'NIS_NOT_FOUND') {
+          setErrorState({
+            title: 'NIS Tidak Ditemukan',
+            message: 'Nomor Induk Siswa yang dimasukkan tidak terdaftar dalam database anggota Ekstrakurikuler ICT SMKN 20 Jakarta.'
+          });
+        } else if (result.error === 'ALREADY_VOTED') {
+          setErrorState({
+            title: 'Suara Telah Terekam',
+            message: 'Sistem mencatat bahwa NIS ini telah digunakan untuk memilih.'
+          });
+        } else {
+          setErrorState({
+            title: 'Terjadi Kesalahan',
+            message: 'Tidak dapat memproses otorisasi saat ini.'
+          });
+        }
+        return
+      }
 
-    if (error || !data) {
-      setErrorState({
-        title: 'NIS Tidak Ditemukan',
-        message: 'Nomor Induk Siswa yang dimasukkan tidak terdaftar dalam database anggota Ekstrakurikuler ICT SMKN 20 Jakarta.'
-      });
-      return
-    }
-
-    if (data.has_voted) {
-      setErrorState({
-        title: 'Suara Telah Terekam',
-        message: 'Sistem mencatat bahwa NIS ini telah digunakan untuk memilih.'
-      });
-    } else {
-      localStorage.setItem('voter_nis', data.nis)
+      // Secure: Cookie JWT sudah diset oleh Server Action
+      localStorage.setItem('voter_nis', result.nis) // Keep for UI display purposes only
       router.push('/vote')
+    } catch (err) {
+      setLoading(false)
+      setErrorState({
+        title: 'Kesalahan Jaringan',
+        message: 'Gagal terhubung ke server otorisasi.'
+      });
     }
   }
 

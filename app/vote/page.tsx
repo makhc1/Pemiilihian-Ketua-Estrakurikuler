@@ -49,25 +49,35 @@ export default function Vote() {
   const executeVote = async () => {
     if (!confirmModal) return;
     setIsVoting(true)
-    const { error } = await supabase.rpc('vote_for_candidate', {
-      voter_nis: voterNis,
-      candidate_id: confirmModal.id
-    })
     
-    if(!error) {
-      localStorage.setItem('device_locked', 'true')
-      router.push('/success')
-    } else {
+    try {
+      const { submitVoteAction } = await import('@/app/actions')
+      const result = await submitVoteAction(confirmModal.id)
+      
+      if (result.success) {
+        localStorage.setItem('device_locked', 'true')
+        router.push('/success')
+      } else {
+        setIsVoting(false)
+        setConfirmModal(null)
+        setErrorMsg(result.error === 'ALREADY_VOTED' 
+          ? 'Otorisasi gagal. Anda terdeteksi sudah memilih sebelumnya.'
+          : 'Otorisasi gagal. Jaringan tidak stabil atau anomali data terdeteksi.')
+        
+        if (result.error === 'ALREADY_VOTED' || result.error === 'UNAUTHORIZED') {
+          setTimeout(() => router.push('/'), 2000)
+        }
+      }
+    } catch (err) {
       setIsVoting(false)
       setConfirmModal(null)
-      setErrorMsg('Otorisasi gagal. Jaringan tidak stabil atau anomali data terdeteksi.')
-      if (error.message.includes('Already voted')) {
-        setTimeout(() => router.push('/'), 2000)
-      }
+      setErrorMsg('Kesalahan jaringan. Gagal memvalidasi token.')
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const { logoutAction } = await import('@/app/actions')
+    await logoutAction()
     localStorage.removeItem('voter_nis')
     router.push('/')
   }
